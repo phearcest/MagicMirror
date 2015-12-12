@@ -1,5 +1,5 @@
 var config = {
-    lang: 'nl',
+    lang: 'en',
     time: {
         timeFormat: 12
     },
@@ -7,11 +7,11 @@ var config = {
         //change weather params here:
         //units: metric or imperial
         params: {
-            q: 'Baarn,Netherlands',
-            units: 'metric',
+            q: 'Chicago,Illinois',
+            units: 'imperial',
             // if you want a different lang for the weather that what is set above, change it here
-            lang: 'nl',
-            APPID: 'YOUR_FREE_OPENWEATHER_API_KEY'
+            lang: 'en',
+            APPID: '0d0322e57ff8d9cbf0327b19c6d19bec'
         }
     },
     compliments: {
@@ -23,7 +23,7 @@ var config = {
             'How was your sleep?'
         ],
         afternoon: [
-            'Hello, beauty!',
+            'Go Irish!',
             'You look sexy!',
             'Looking good today!'
         ],
@@ -37,6 +37,6 @@ var config = {
         maximumEntries: 10
     },
     news: {
-        feed: 'http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml'
+        feed: 'http://feeds.reuters.com/reuters/sportsNews?format=xml'
     }
 }

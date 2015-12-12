@@ -22,6 +22,69 @@ var weather = {
 		'13n':'wi-night-snow',
 		'50n':'wi-night-alt-cloudy-windy'
 	},
+	conditionTable: {
+		'200':'wi-day-storm-showers',				//Thunderstorms
+		'201':'wi-storm-showers',
+		'202':'wi-thunderstorm',
+		'210':'wi-lightning',
+		'211':'wi-lightning',
+		'212':'wi-lightning',
+		'221':'wi-lightning',
+		'230':'wi-day-storm-showers',
+		'231':'wi-day-storm-showers',
+		'232':'wi-day-storm-showers',
+		'300':'wi-day-sprinkle',						//Drizzle
+		'301':'wi-day-sprinkle',
+		'302':'wi-day-sprinkle',
+		'310':'wi-day-sprinkle',
+		'311':'wi-day-sprinkle',
+		'312':'wi-day-sprinkle',
+		'313':'wi-sprinkle',
+		'314':'wi-sprinkle',
+		'321':'wi-sprinkle',
+		'500':'wi-day-rain',								//Rain
+		'501':'wi-rain',
+		'502':'wi-rain',
+		'503':'wi-rain',
+		'504':'wi-rain-wind',
+		'511':'wi-sleet',
+		'520':'wi-day-showers',
+		'521':'wi-day-showers',
+		'522':'wi-showers',
+		'531':'wi-showers',
+		'600':'wi-snow',										//Snow
+		'601':'wi-snow',
+		'602':'wi-snow-wind',
+		'611':'wi-sleet',
+		'612':'wi-day-sleet',
+		'615':'wi-day-rain-mix',
+		'616':'wi-rain-mix',
+		'620':'wi-day-snow',
+		'621':'wi-day-snow',
+		'622':'wi-day-snow',
+		'701':'wi-day-cloudy-windy',									//Atmosphere
+		'711':'wi-smoke',
+		'721':'wi-day-fog',
+		'731':'wi-sandstorm',
+		'741':'wi-fog',
+		'751':'wi-sandstorm',
+		'761':'wi-dust',
+		'762':'wi-volcano',
+		'771':'wi-cloudy-gusts',
+		'781':'wi-tornado',
+		'800':'wi-day-sunny',								//Clear
+		'801':'wi-day-cloudy',							//Cloudy
+		'802':'wi-cloud',
+		'803':'wi-cloud',
+		'804':'wi-cloudy',
+		'900':'wi-tornado',									//Extreme
+		'901':'wi-thunderstorm',
+		'902':'wi-hurricane',
+		'903':'wi-snowflake-cold',
+		'904':'wi-hot',
+		'905':'wi-strong-wind',
+		'906':'wi-hail'
+	},
 	temperatureLocation: '.temp',
 	windSunLocation: '.windsun',
 	forecastLocation: '.forecast',
@@ -41,6 +104,11 @@ var weather = {
  */
 weather.roundValue = function (temperature) {
 	return parseFloat(temperature).toFixed(1);
+}
+
+
+weather.roundValueFull = function (temperature) {
+	return parseFloat(temperature).toFixed(0);
 }
 
 /**
@@ -74,10 +142,10 @@ weather.updateCurrentWeather = function () {
 		success: function (data) {
 
 			var _temperature = this.roundValue(data.main.temp),
-				_temperatureMin = this.roundValue(data.main.temp_min),
-				_temperatureMax = this.roundValue(data.main.temp_max),
+				_temperatureMin = this.roundValueFull(data.main.temp_min),
+				_temperatureMax = this.roundValueFull(data.main.temp_max),
 				_wind = this.roundValue(data.wind.speed),
-				_iconClass = this.iconTable[data.weather[0].icon];
+				_iconClass = this.conditionTable[data.weather[0]['id']];
 
 			var _icon = '<span class="icon ' + _iconClass + ' dimmed wi"></span>';
 
@@ -95,6 +163,16 @@ weather.updateCurrentWeather = function () {
 			if (_sunrise < _now && _sunset > _now) {
 				_newSunHtml = '<span class="wi wi-sunset xdimmed"></span> ' + _sunset;
 			}
+
+			if (_sunrise > _now || _sunset < _now) {
+				_iconClass = _iconClass.replace('day', 'night');
+			}
+
+			var _icon = '<span class="icon ' + _iconClass + ' dimmed wi"></span>';
+
+			var _newTempHtml = _icon + '' + _temperature + '&deg;';
+
+			$(this.temperatureLocation).updateWithText(_newTempHtml, this.fadeInterval);
 
 			$(this.windSunLocation).updateWithText(_newWindHtml + ' ' + _newSunHtml, this.fadeInterval);
 
@@ -129,9 +207,9 @@ weather.updateWeatherForecast = function () {
 				_forecastHtml += '<tr style="opacity:' + _opacity + '">';
 
 				_forecastHtml += '<td class="day">' + moment(_forecast.dt, 'X').format('ddd') + '</td>';
-				_forecastHtml += '<td class="icon-small ' + this.iconTable[_forecast.weather[0].icon] + '"></td>';
-				_forecastHtml += '<td class="temp-max">' + this.roundValue(_forecast.temp.max) + '</td>';
-				_forecastHtml += '<td class="temp-min">' + this.roundValue(_forecast.temp.min) + '</td>';
+				_forecastHtml += '<td class="icon-small ' + this.conditionTable[_forecast.weather[0]['id']] + '"></td>';
+				_forecastHtml += '<td class="temp-max">' + this.roundValueFull(_forecast.temp.max) + '</td>';
+				_forecastHtml += '<td class="temp-min">' + this.roundValueFull(_forecast.temp.min) + '</td>';
 
 				_forecastHtml += '</tr>';
 

@@ -24,6 +24,11 @@ function roundVal(temp)
 	return Math.round(temp * 10) / 10;
 }
 
+function sleep(miliseconds) {
+  var currentTime = new Date().getTime();
+	while (currentTime + miliseconds >= new Date().getTime()) {}
+}
+
 jQuery(document).ready(function($) {
 
 	var eventList = [];
@@ -33,17 +38,38 @@ jQuery(document).ready(function($) {
 
     moment.locale(config.lang);
 
-	//connect do Xbee monitor
-	// var socket = io.connect('http://rpi-alarm.local:8082');
-	// socket.on('dishwasher', function (dishwasherReady) {
-	// 	if (dishwasherReady) {
-	// 		$('.dishwasher').fadeIn(2000);
-	// 		$('.lower-third').fadeOut(2000);
-	// 	} else {
-	// 		$('.dishwasher').fadeOut(2000);
-	// 		$('.lower-third').fadeIn(2000);
-	// 	}
-	// });
+	var socket = io.connect('http://localhost:3000');
+	
+	socket.on('command', function (data) {
+		console.log(data);
+		$('.images').html(data);
+		$('.images').fadeIn(250);
+		$('.lower-third').fadeOut(50);
+	});
+
+	socket.on('images', function (data) {
+		$('.ready').html('');
+		$('.ready').fadeOut(100);
+		$('.images').html(data);
+		$('.images').fadeIn(250);
+		$('.lower-third').fadeOut(50);
+	});
+
+	socket.on('ready', function (data) {
+		$('.images').html('');
+		$('.images').fadeOut(200);
+		$('.ready').html(data);
+		$('.ready').fadeIn(250);
+		$('.lower-third').fadeOut(50);
+	});
+
+	socket.on('dismiss', function (data) {
+		$('.ready').html('');
+		$('.ready').fadeOut(1000);
+		$('.images').html('');
+		$('.images').fadeOut(1000);
+		$('.lower-third').fadeIn(1000);
+	});
 
 	version.init();
 

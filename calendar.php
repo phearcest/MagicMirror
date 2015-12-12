@@ -1,7 +1,7 @@
 <?php
 	
 	// Set the url of the calendar feed.
-	$url = 'https://p01-calendarws.icloud.com/ca/subscribe/1/n6x7Farxpt7m9S8bHg1TGArSj7J6kanm_2KEoJPL5YIAk3y70FpRo4GyWwO-6QfHSY5mXtHcRGVxYZUf7U3HPDOTG5x0qYnno1Zr_VuKH2M';
+	$url = 'https://p09-calendars.icloud.com/published/2/USwv4rvkz4qEZA7vfSh_4U795C6q-FOmF6qobenTtsBmTaWvop10-dVtZp29mC8kVWDnL-Q3L2fPg1jebCDiI7uUCSHXcGZcTa62-fQ0PKY';
 
 	/*****************************************/
 
